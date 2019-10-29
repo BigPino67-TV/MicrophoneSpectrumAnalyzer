@@ -30,7 +30,6 @@
         {
             this.cmbRecordingSource = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.circleSpectrumVisualizer1 = new MicrophoneSpectrumAnalyzer.AudioSpectrumVisualizers.CircleSpectrumVisualizer();
             this.label2 = new System.Windows.Forms.Label();
             this.cmbBackgroundSource = new System.Windows.Forms.ComboBox();
             this.txtFilePath = new System.Windows.Forms.TextBox();
@@ -45,6 +44,8 @@
             this.label6 = new System.Windows.Forms.Label();
             this.txtNumLines = new System.Windows.Forms.NumericUpDown();
             this.horizontalSpectrumVisualizer1 = new MicrophoneSpectrumAnalyzer.AudioSpectrumVisualizers.HorizontalSpectrumVisualizer();
+            this.circleSpectrumVisualizer1 = new MicrophoneSpectrumAnalyzer.AudioSpectrumVisualizers.CircleSpectrumVisualizer();
+            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             ((System.ComponentModel.ISupportInitialize)(this.txtNumLines)).BeginInit();
             this.SuspendLayout();
             // 
@@ -68,15 +69,6 @@
             this.label1.TabIndex = 1;
             this.label1.Text = "Audio input device :";
             // 
-            // circleSpectrumVisualizer1
-            // 
-            this.circleSpectrumVisualizer1.Img = null;
-            this.circleSpectrumVisualizer1.Location = new System.Drawing.Point(153, 271);
-            this.circleSpectrumVisualizer1.Name = "circleSpectrumVisualizer1";
-            this.circleSpectrumVisualizer1.Size = new System.Drawing.Size(626, 689);
-            this.circleSpectrumVisualizer1.TabIndex = 2;
-            this.circleSpectrumVisualizer1.Text = "circleSpectrumVisualizer1";
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -92,7 +84,8 @@
             this.cmbBackgroundSource.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbBackgroundSource.FormattingEnabled = true;
             this.cmbBackgroundSource.Items.AddRange(new object[] {
-            "None",
+            "None (transparent)",
+            "Color",
             "Image / Animated gif",
             "Video"});
             this.cmbBackgroundSource.Location = new System.Drawing.Point(473, 105);
@@ -226,6 +219,15 @@
             this.horizontalSpectrumVisualizer1.TabIndex = 16;
             this.horizontalSpectrumVisualizer1.Text = "horizontalSpectrumVisualizer1";
             // 
+            // circleSpectrumVisualizer1
+            // 
+            this.circleSpectrumVisualizer1.Img = null;
+            this.circleSpectrumVisualizer1.Location = new System.Drawing.Point(153, 271);
+            this.circleSpectrumVisualizer1.Name = "circleSpectrumVisualizer1";
+            this.circleSpectrumVisualizer1.Size = new System.Drawing.Size(626, 689);
+            this.circleSpectrumVisualizer1.TabIndex = 2;
+            this.circleSpectrumVisualizer1.Text = "circleSpectrumVisualizer1";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -278,6 +280,7 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.NumericUpDown txtNumLines;
         private AudioSpectrumVisualizers.HorizontalSpectrumVisualizer horizontalSpectrumVisualizer1;
+        private System.Windows.Forms.ColorDialog colorDialog1;
     }
 }
 

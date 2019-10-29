@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace MicrophoneSpectrumAnalyzer.AudioSpectrumVisualizers
@@ -23,6 +24,7 @@ namespace MicrophoneSpectrumAnalyzer.AudioSpectrumVisualizers
         private Brush _overlayBr;
         private EllipsePictureBox _ellipsePB;
         private FileVideoSource _videoSource;
+        private VideoCaptureDevice _videoInputDevice;
 
         /// <summary>
         /// Get or set image
@@ -137,6 +139,7 @@ namespace MicrophoneSpectrumAnalyzer.AudioSpectrumVisualizers
 
         public void SetImageOrAnimatedGif(string filepath)
         {
+            _ellipsePB.BackColor = Color.Transparent;
             if (string.IsNullOrEmpty(filepath))
             {
                 _ellipsePB.Image = null;
@@ -149,8 +152,15 @@ namespace MicrophoneSpectrumAnalyzer.AudioSpectrumVisualizers
             }
         }
 
+        public void SetColor(Color color)
+        {
+            _ellipsePB.Image = null;
+            _ellipsePB.BackColor = color;
+        }
+
         public void SetVideo(string filepath)
         {
+            _ellipsePB.BackColor = Color.Transparent;
             if (_videoSource != null) {
                 _videoSource.SignalToStop();
                 _videoSource = null;
@@ -191,9 +201,29 @@ namespace MicrophoneSpectrumAnalyzer.AudioSpectrumVisualizers
             _videoSource = null;
         }
 
-        public void SetWebcam()
+        public void SetWebcam(FilterInfo videoInputFilter)
         {
+            _videoInputDevice = new VideoCaptureDevice(videoInputFilter.MonikerString);
+            _videoInputDevice.VideoResolution = _videoInputDevice.VideoCapabilities.Last();
+            _videoInputDevice.NewFrame += OnVideoDeviceNewFrame;
+            _videoInputDevice.Start();
+        }
 
+        private void OnVideoDeviceNewFrame(object sender, NewFrameEventArgs eventargs)
+        {
+            Bitmap bitmap = (Bitmap)eventargs.Frame.Clone();
+            _ellipsePB.Image = bitmap;
+            _ellipsePB.Invalidate();
+        }
+
+        public void StopWebcam()
+        {
+            if (_videoInputDevice != null) {
+                _videoInputDevice.SignalToStop();
+                _videoInputDevice.WaitForStop();
+            }
+                
+            _videoInputDevice = null;
         }
     }
 

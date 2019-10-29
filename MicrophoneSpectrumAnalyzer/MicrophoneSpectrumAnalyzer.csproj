@@ -80,12 +80,6 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="WebcamCapturer.Controls.WinForms, Version=1.1.1.2, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\WebcamCapturer.Controls.WinForms.1.1.1.2\lib\net472\WebcamCapturer.Controls.WinForms.dll</HintPath>
-    </Reference>
-    <Reference Include="WebcamCapturer.Core, Version=1.1.1.2, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\WebcamCapturer.Core.1.1.1.2\lib\net472\WebcamCapturer.Core.dll</HintPath>
-    </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -145,6 +139,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="background\anim_bigpino67.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="background\please-pick-color.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="background\please-select-file.jpg">
