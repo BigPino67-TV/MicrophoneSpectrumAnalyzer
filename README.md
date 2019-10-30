@@ -1,5 +1,5 @@
 # MicrophoneSpectrumAnalyzer
- A nice looking streaming tool to visualize your voice frequency.
+ A nice looking streaming tool to visualize your voice frequency. You can [download the app here!](https://github.com/BigPino67-TV/MicrophoneSpectrumAnalyzer/releases)
  
 ![alt text](https://github.com/BigPino67-TV/MicrophoneSpectrumAnalyzer/blob/master/MicrophoneSpectrumAnalyzer.png)
 
