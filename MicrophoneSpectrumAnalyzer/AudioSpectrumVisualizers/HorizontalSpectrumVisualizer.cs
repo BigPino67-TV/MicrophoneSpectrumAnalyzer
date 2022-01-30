@@ -29,14 +29,14 @@ namespace MicrophoneSpectrumAnalyzer.AudioSpectrumVisualizers
             int bottomHeightForBar = this.Height - 1 - (int)_baseLinePen.Width - BAR_PADDING * 2;
 
             // get max data value
-            byte max = 1;
-            for (int i = 0; i < data.Length; i++)
+            byte max = data[0];
+            for (int i = 1; i < data.Length; i++)
             {
                 if (max < data[i])
                     max = data[i];
             }
             // scale ratio to ensure entire bar will fit available height for bar.
-            float heightRatio = heightForBar * 1f / max;
+            float heightRatio = heightForBar * 1f / Math.Max(max, (byte)1);
 
             // the number of padding is greater than bar is 1
             // padding , bar , padding , bar , ... , bar, padding
@@ -65,8 +65,8 @@ namespace MicrophoneSpectrumAnalyzer.AudioSpectrumVisualizers
         {
             base.OnPaint(e);
             int baseLineY = this.Height - 1 - (int)_baseLinePen.Width / 2;
-            e.Graphics.DrawLine(_baseLinePen, 
-                new Point(0, baseLineY), 
+            e.Graphics.DrawLine(_baseLinePen,
+                new Point(0, baseLineY),
                 new Point(this.Width - 1, baseLineY));
         }
     }

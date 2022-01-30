@@ -219,11 +219,11 @@ namespace MicrophoneSpectrumAnalyzer
 
                 if (color.GetBrightness() < 0.5)
                 {
-                    SetLabelsColor(Color.White);
+                    SetForegroundColors(Color.White);
                 }
                 else
                 {
-                    SetLabelsColor(Color.Black);
+                    SetForegroundColors(Color.Black);
                 }
 
                 var hexColor = $"#{color.R:X2}{color.G:X2}{color.B:X2}";
@@ -237,7 +237,7 @@ namespace MicrophoneSpectrumAnalyzer
 
         }
 
-        private void SetLabelsColor(Color color)
+        private void SetForegroundColors(Color color)
         {
             this.lblColorToRemove.ForeColor = color;
             this.label1.ForeColor = color;
@@ -247,6 +247,14 @@ namespace MicrophoneSpectrumAnalyzer
             this.label6.ForeColor = color;
             this.label7.ForeColor = color;
             this.lblFilePath.ForeColor = color;
+
+            circleSpectrumVisualizer1.BarBgPenColor = Color.FromArgb(64, color);
+            circleSpectrumVisualizer1.BaseLinePenColor = color;
+            circleSpectrumVisualizer1.BarPenColor = color;
+
+            horizontalSpectrumVisualizer1.BarBgPenColor = Color.FromArgb(64, color);
+            horizontalSpectrumVisualizer1.BaseLinePenColor = color;
+            horizontalSpectrumVisualizer1.BarPenColor = color;
         }
     }
 
