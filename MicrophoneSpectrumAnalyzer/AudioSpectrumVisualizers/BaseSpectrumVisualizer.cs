@@ -18,6 +18,22 @@ namespace MicrophoneSpectrumAnalyzer.AudioSpectrumVisualizers
         protected Pen _baseLinePen;
         protected Rectangle _baseLineRect;
 
+        public Color BaseLinePenColor
+        {
+            get => _baseLinePen.Color;
+            set => _baseLinePen.Color = value;
+        }
+        public Color BarPenColor
+        {
+            get => _barPen.Color;
+            set => _barPen.Color = value;
+        }
+        public Color BarBgPenColor
+        {
+            get => _barBgPen.Color;
+            set => _barBgPen.Color = value;
+        }
+
         public BaseSpectrumVisualizer()
         {
             SetStyle(ControlStyles.SupportsTransparentBackColor, true);
@@ -57,10 +73,11 @@ namespace MicrophoneSpectrumAnalyzer.AudioSpectrumVisualizers
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             if (_bars != null)
             {
+                g.DrawEllipse(_baseLinePen, _baseLineRect);
                 for (int i = 0; i < _bars.Length; i++)
                 {
                     var bar = _bars[i];
-                    g.DrawEllipse(_baseLinePen, _baseLineRect);
+
                     g.DrawLine(_barPen, bar.Start, bar.End);
                     g.DrawLine(_barBgPen, bar.Start, bar.End);
                 }

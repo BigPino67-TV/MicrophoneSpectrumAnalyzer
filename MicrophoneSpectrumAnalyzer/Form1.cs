@@ -15,6 +15,7 @@ using Mmosoft.Oops.Animation;
 using MicrophoneSpectrumAnalyzer.AudioSpectrumVisualizers;
 using AForge.Video.DirectShow;
 using AForge.Video;
+using System.Diagnostics;
 
 namespace MicrophoneSpectrumAnalyzer
 {
@@ -44,7 +45,6 @@ namespace MicrophoneSpectrumAnalyzer
 
             ScanForVideoInputDevices();
 
-
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -60,6 +60,7 @@ namespace MicrophoneSpectrumAnalyzer
                 this.cmbBackgroundSource.SelectedIndex = 0;
             }
 
+            this.txtKeyColor.AutoSize = false;
         }
 
         private void CmbRecordingSource_SelectedIndexChanged(object sender, EventArgs e)
@@ -207,6 +208,53 @@ namespace MicrophoneSpectrumAnalyzer
             {
                 this.cmbBackgroundSource.Items.Add(filterInfo.Name);
             }
+        }
+
+        private void btnKeyColor_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var color = System.Drawing.ColorTranslator.FromHtml(this.txtKeyColor.Text);
+                this.BackColor = color;
+
+                if (color.GetBrightness() < 0.5)
+                {
+                    SetForegroundColors(Color.White);
+                }
+                else
+                {
+                    SetForegroundColors(Color.Black);
+                }
+
+                var hexColor = $"#{color.R:X2}{color.G:X2}{color.B:X2}";
+
+                this.lblColorToRemove.Text = $"The key color to remove is {hexColor}";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Please enter a valid color{Environment.NewLine}Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+        }
+
+        private void SetForegroundColors(Color color)
+        {
+            this.lblColorToRemove.ForeColor = color;
+            this.label1.ForeColor = color;
+            this.label2.ForeColor = color;
+            this.label4.ForeColor = color;
+            this.label5.ForeColor = color;
+            this.label6.ForeColor = color;
+            this.label7.ForeColor = color;
+            this.lblFilePath.ForeColor = color;
+
+            circleSpectrumVisualizer1.BarBgPenColor = Color.FromArgb(64, color);
+            circleSpectrumVisualizer1.BaseLinePenColor = color;
+            circleSpectrumVisualizer1.BarPenColor = color;
+
+            horizontalSpectrumVisualizer1.BarBgPenColor = Color.FromArgb(64, color);
+            horizontalSpectrumVisualizer1.BaseLinePenColor = color;
+            horizontalSpectrumVisualizer1.BarPenColor = color;
         }
     }
 
