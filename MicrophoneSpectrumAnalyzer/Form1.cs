@@ -15,6 +15,7 @@ using Mmosoft.Oops.Animation;
 using MicrophoneSpectrumAnalyzer.AudioSpectrumVisualizers;
 using AForge.Video.DirectShow;
 using AForge.Video;
+using System.Diagnostics;
 
 namespace MicrophoneSpectrumAnalyzer
 {
@@ -43,7 +44,6 @@ namespace MicrophoneSpectrumAnalyzer
             circleSpectrumVisualizer1.SetImageOrAnimatedGif("./background/anim_bigpino67.gif");
 
             ScanForVideoInputDevices();
-
 
         }
 

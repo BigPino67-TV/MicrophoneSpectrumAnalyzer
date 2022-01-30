@@ -8,6 +8,7 @@ using NAudio.Wave;
 using NAudio.CoreAudioApi;
 using Mmosoft.Oops.Animation;
 using System.Linq;
+using System.Diagnostics;
 
 namespace MicrophoneSpectrumAnalyzer
 {
@@ -17,8 +18,8 @@ namespace MicrophoneSpectrumAnalyzer
         public List<byte> _spectrumdata;   //spectrum data buffer
 
         //
-        private WaveIn _wi;
-        private BufferedWaveProvider _bwp;
+        private WaveIn _waveIn;
+        private BufferedWaveProvider _bufferedWaveProvider;
         
         private ComboBox _cmbRecordingDeviceList;       //device list
         
@@ -31,7 +32,8 @@ namespace MicrophoneSpectrumAnalyzer
 
         public BaseSpectrumVisualizer SpectrumVisualizer { get; set; }//spectrum dispay control
         public SpectrumMode Mode { get; set; }
-        public int NumberOfLines{ get; set; }
+        public int NumberOfLines { get; set; }
+
         //ctor
         public Analyzer(BaseSpectrumVisualizer audioSpectrumVisualizer, SpectrumMode mode, ComboBox devicelist)
         {
@@ -48,31 +50,31 @@ namespace MicrophoneSpectrumAnalyzer
             string recordingSource = this._cmbRecordingDeviceList.SelectedItem.ToString();
             int newWaveInDeviceNumber = int.Parse(recordingSource.Split(this.WhiteSpace)[0].Trim());
 
-            if (_wi != null)
+            if (_waveIn != null)
             {
-                _wi.StopRecording();
-                _wi.Dispose();
+                _waveIn.StopRecording();
+                _waveIn.Dispose();
             }
 
-            _wi = new WaveIn();
-            _wi.DeviceNumber = newWaveInDeviceNumber;
-            _wi.WaveFormat = new NAudio.Wave.WaveFormat(RATE, 1);
-            _wi.BufferMilliseconds = (int)((double)BUFFERSIZE / (double)RATE * 1000.0);
-            _wi.DataAvailable += new EventHandler<WaveInEventArgs>(AudioDataAvailable);
-            _bwp = new BufferedWaveProvider(_wi.WaveFormat);
-            _bwp.BufferLength = BUFFERSIZE * 2;
-            _bwp.DiscardOnBufferOverflow = true;
+            _waveIn = new WaveIn();
+            _waveIn.DeviceNumber = newWaveInDeviceNumber;
+            _waveIn.WaveFormat = new NAudio.Wave.WaveFormat(RATE, 1);
+            _waveIn.BufferMilliseconds = (int)((double)BUFFERSIZE / (double)RATE * 1000.0);
+            _waveIn.DataAvailable += new EventHandler<WaveInEventArgs>(AudioDataAvailable);
+            _bufferedWaveProvider = new BufferedWaveProvider(_waveIn.WaveFormat);
+            _bufferedWaveProvider.BufferLength = BUFFERSIZE * 2;
+            _bufferedWaveProvider.DiscardOnBufferOverflow = true;
             try
             {
-                _wi.StartRecording();
+                _waveIn.StartRecording();
                 
             }
             catch
             {
-                string msg = "Could not record from audio device!\n\n";
-                msg += "Is your microphone plugged in?\n";
-                msg += "Is it set as your default recording device?";
-                MessageBox.Show(msg, "ERROR");
+                string message = "Could not record from audio device!\n\n";
+                message += "Is your microphone plugged in?\n";
+                message += "Is it set as your default recording device?";
+                MessageBox.Show(message, "ERROR");
             }
 
 
@@ -109,7 +111,7 @@ namespace MicrophoneSpectrumAnalyzer
 
         private void SetDataFFT(WaveInEventArgs args)
         {
-            int bytesPerSample = _wi.WaveFormat.BitsPerSample / 8;
+            int bytesPerSample = _waveIn.WaveFormat.BitsPerSample / 8;
             int samplesRecorded = args.BytesRecorded / bytesPerSample;
             Int16[] dataPcm = new Int16[samplesRecorded];
             for (int i = 0; i < samplesRecorded; i++)
@@ -146,13 +148,13 @@ namespace MicrophoneSpectrumAnalyzer
         }
 
         private void SetDataAmplitude(WaveInEventArgs args) {
-            int bytesPerSample = _wi.WaveFormat.BitsPerSample / 8;
+            int bytesPerSample = _waveIn.WaveFormat.BitsPerSample / 8;
             int samplesRecorded = args.BytesRecorded / bytesPerSample;
             Int16[] lastBuffer = new Int16[samplesRecorded];
             for (int i = 0; i < samplesRecorded; i++)
                 lastBuffer[i] = BitConverter.ToInt16(args.Buffer, i * bytesPerSample);
             int lastBufferAmplitude = lastBuffer.Max() - lastBuffer.Min();
-            double amplitude = (double)lastBufferAmplitude / Math.Pow(2, _wi.WaveFormat.BitsPerSample);
+            double amplitude = (double)lastBufferAmplitude / Math.Pow(2, _waveIn.WaveFormat.BitsPerSample);
             if (amplitude > peakAmplitudeSeen)
                 peakAmplitudeSeen = amplitude;
             amplitude = amplitude / peakAmplitudeSeen * 100;

@@ -57,10 +57,11 @@ namespace MicrophoneSpectrumAnalyzer.AudioSpectrumVisualizers
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             if (_bars != null)
             {
+                g.DrawEllipse(_baseLinePen, _baseLineRect);
                 for (int i = 0; i < _bars.Length; i++)
                 {
                     var bar = _bars[i];
-                    g.DrawEllipse(_baseLinePen, _baseLineRect);
+
                     g.DrawLine(_barPen, bar.Start, bar.End);
                     g.DrawLine(_barBgPen, bar.Start, bar.End);
                 }
